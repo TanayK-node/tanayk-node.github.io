@@ -1,0 +1,448 @@
+/* ============================================================
+   Tanay Kinariwala — research portfolio
+   Concept: "waypoint log" — a nod to GPS/route-optimization work.
+   Sections are logged like stops on a route, not generic cards.
+
+   Palette:
+     --ground   #0F1210   near-black, slight green-black cast
+     --paper    #FBF9F4   warm bone paper (not sterile white)
+     --route    #FF5A1F   burnt vermilion — a route-marker orange,
+                           not a SaaS blue
+     --route-d  #C23F0F   pressed/dark state
+     --ink      #1B1D19
+     --fog      #8A897E   muted secondary
+     --line     #DEDACB   hairline on paper
+
+   Type:
+     Display  — "Archivo Black" heavy grotesk (headers, name, numerals)
+     Body     — "Source Serif 4" — humanist serif for reading paragraphs
+     Data     — "IBM Plex Mono" — coordinates, dates, stats
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --ground: #0F1210;
+  --paper: #FBF9F4;
+  --route: #FF5A1F;
+  --route-d: #C23F0F;
+  --ink: #1B1D19;
+  --fog: #8A897E;
+  --line: #DEDACB;
+  --white: #FFFFFF;
+
+  --font-display: "Archivo Black", "Arial Black", sans-serif;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+.allstuffp {
+  max-width: 1220px;
+}
+
+/* faint route-line watermark across the whole page */
+body {
+  background-image:
+    radial-gradient(circle at 100% 0%, rgba(255,90,31,0.05), transparent 45%),
+    repeating-linear-gradient(
+      transparent,
+      transparent 39px,
+      rgba(27,29,25,0.035) 39px,
+      rgba(27,29,25,0.035) 40px
+    );
+}
+
+/* ---------------------------------------------------------- */
+/* SIDEBAR                                                     */
+/* ---------------------------------------------------------- */
+
+.fixed-posi {
+  position: sticky;
+  top: 2rem;
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+.name::before {
+  content: "◆ ";
+  color: var(--route);
+  font-size: 1.1rem;
+  vertical-align: middle;
+}
+
+.profilepic {
+  width: 100%;
+  max-width: 190px;
+  border-radius: 0;
+  border: 3px solid var(--ink);
+  display: block;
+  filter: grayscale(15%);
+}
+
+.menur {
+  border-top: 3px solid var(--ink);
+  padding-top: 1.3rem !important;
+  margin-top: 1.2rem;
+}
+
+.menulink {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--line);
+  transition: color 0.15s ease, padding-left 0.15s ease;
+}
+
+.menulink:hover {
+  color: var(--route-d);
+  padding-left: 0.3rem;
+  text-decoration: none;
+}
+
+.menulink::after {
+  content: "↗";
+  color: var(--fog);
+  font-size: 0.9rem;
+}
+
+.menulink:hover::after {
+  color: var(--route);
+}
+
+.fixed-posi > div.pt-4 {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--fog);
+  padding-top: 1.1rem !important;
+  letter-spacing: 0.03em;
+}
+
+.fixed-posi > div.pt-4::before {
+  content: "LAT/LNG · ";
+  color: var(--route);
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------- */
+/* MAIN CONTENT — TYPOGRAPHY                                   */
+/* ---------------------------------------------------------- */
+
+.about p {
+  color: #2B2D26;
+  font-size: 1.08rem;
+}
+
+.about strong {
+  color: var(--ink);
+  font-weight: 600;
+  background: linear-gradient(to bottom, transparent 62%, rgba(255,90,31,0.18) 62%);
+}
+
+.in-text {
+  color: var(--route-d);
+  text-decoration: none;
+  border-bottom: 2px solid var(--route);
+}
+
+.in-text:hover {
+  background: var(--route);
+  color: var(--white);
+  text-decoration: none;
+}
+
+/* Section headers — big, numbered like waypoint log entries */
+.header {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin-bottom: 1.6rem !important;
+  padding-bottom: 0.6rem;
+  border-bottom: 4px solid var(--ink);
+  position: relative;
+}
+
+.about {
+  counter-reset: waypoint;
+}
+
+.header {
+  counter-increment: waypoint;
+}
+
+.header::before {
+  content: "WP-0" counter(waypoint);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  background: var(--route);
+  padding: 0.3rem 0.55rem;
+  order: -1;
+}
+
+/* ---------------------------------------------------------- */
+/* CARDS — education / research / publications / projects      */
+/* ---------------------------------------------------------- */
+
+.paper {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  padding: 1.3rem 1.5rem !important;
+  margin: 0 0 1.15rem 0 !important;
+  position: relative;
+  box-shadow: 5px 5px 0 rgba(27,29,25,0.08);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.paper:hover {
+  box-shadow: 7px 7px 0 rgba(255,90,31,0.25);
+  transform: translate(-2px, -2px);
+}
+
+.papertitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.12rem;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+
+.thisauthor {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--fog);
+}
+
+.paper {
+  font-size: 0.98rem;
+  color: #2B2D26;
+}
+
+.conf {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--ink);
+  background: #F1EDDF;
+  border: 1px solid var(--line);
+  padding: 0.2rem 0.6rem;
+  margin-top: 0.4rem;
+  letter-spacing: 0.01em;
+}
+
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--ink);
+  border: 2px solid var(--ink);
+  padding: 0.28rem 0.7rem;
+  margin-top: 0.7rem;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.tag:hover {
+  background: var(--route);
+  border-color: var(--route);
+  color: var(--white);
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------- */
+/* METRIC HIGHLIGHTS — the signature element                    */
+/* ---------------------------------------------------------- */
+
+.metric {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--white);
+  background: var(--route);
+  padding: 0.06rem 0.4rem;
+  white-space: nowrap;
+  box-shadow: 2px 2px 0 rgba(27,29,25,0.5);
+}
+
+/* ---------------------------------------------------------- */
+/* SKILLS                                                       */
+/* ---------------------------------------------------------- */
+
+.skill-label {
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--route-d);
+  width: 100%;
+  margin-bottom: 0.4rem;
+  margin-top: 1rem;
+}
+
+.skill-label::before {
+  content: "› ";
+}
+
+.skills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.3rem 0 0.6rem 0;
+}
+
+.pill {
+  font-family: var(--font-mono);
+  font-size: 0.83rem;
+  color: var(--ink);
+  background: var(--white);
+  border: 1.5px solid var(--ink);
+  padding: 0.3rem 0.75rem;
+  border-radius: 0;
+}
+
+.interest-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.interest-pill {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--route);
+  padding: 0.35rem 0.85rem;
+}
+
+.interest-pill:nth-child(odd) {
+  background: var(--route);
+  color: var(--white);
+}
+
+/* ---------------------------------------------------------- */
+/* ACHIEVEMENTS                                                  */
+/* ---------------------------------------------------------- */
+
+.achieve-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-body);
+}
+
+.achieve-row:last-child { border-bottom: none; }
+
+.achieve-tag {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--white);
+  background: var(--ink);
+  padding: 0.25rem 0.55rem;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------- */
+/* CONTACT                                                       */
+/* ---------------------------------------------------------- */
+
+.contact-block {
+  background: var(--ink);
+  color: #EFEDE3;
+  border-radius: 0;
+  padding: 2rem 2rem;
+  margin-top: 0.5rem;
+  position: relative;
+  border-left: 8px solid var(--route);
+}
+
+.contact-block a {
+  color: var(--route);
+  font-family: var(--font-mono);
+  font-size: 1.02rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2px solid var(--route);
+}
+
+.contact-block a:hover {
+  background: var(--route);
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------- */
+/* FOOTER                                                        */
+/* ---------------------------------------------------------- */
+
+.text-center.py-5 small {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--fog);
+  letter-spacing: 0.03em;
+}
+
+/* ---------------------------------------------------------- */
+/* RESPONSIVE                                                    */
+/* ---------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .fixed-posi { position: static; }
+  .profilepic { max-width: 140px; }
+  .name { font-size: 1.6rem; }
+  .header { font-size: 1.25rem; flex-wrap: wrap; }
+  .paper { box-shadow: 3px 3px 0 rgba(27,29,25,0.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+a:focus-visible, .menulink:focus-visible, .tag:focus-visible {
+  outline: 3px solid var(--route);
+  outline-offset: 2px;
+}
